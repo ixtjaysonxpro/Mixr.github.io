@@ -60,21 +60,3 @@ input[type="submit"]:hover {
 	</div>
 </body>
 </html>
-<?php
-session_start();
-
-if (isset($_POST['username']) && isset($_POST['password'])) {
-	// Connect to database and validate user
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-
-	// Validate the user's credentials here
-	// ...
-
-	// If the user is valid, redirect to home.php
-	$_SESSION['username'] = $username;
-	header('Location: home.php');
-	exit();
-}
-?>
-
