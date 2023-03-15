@@ -58,11 +58,12 @@ input[type="submit"]:hover {
 			<input type="submit" value="Login">
 		</form>
 	</div>
+
+	<script>
+		// Redirect to home.php after form submission
+		document.querySelector('form').addEventListener('submit', function() {
+			window.location.href = 'home.php';
+		});
+	</script>
 </body>
 </html>
-<?php
-// Redirect to home.php
-header('Location: home.php');
-exit();
-?>
-
