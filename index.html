@@ -1,0 +1,98 @@
+const cheerio = require('cheerio');
+const request = require('request');
+
+const url = 'https://example.com/real-estate';
+
+request(url, (error, response, html) => {
+  if (!error && response.statusCode == 200) {
+    const $ = cheerio.load(html);
+
+    const properties = [];
+
+    $('.property').each((index, element) => {
+      const address = $(element).find('.address').text().trim();
+      const price = parseInt($(element).find('.price').text().replace(/[^0-9]/g, ''));
+      const description = $(element).find('.description').text().trim();
+
+      const property = {
+        address,
+        price,
+        description
+      };
+
+      properties.push(property);
+    });
+
+    // sort properties by price
+    properties.sort((a, b) => a.price - b.price);
+
+    // create HTML file with price filters
+    let html = `
+      <html>
+        <head>
+          <title>Real Estate App</title>
+        </head>
+        <body>
+          <h1>Real Estate Properties</h1>
+          <div>
+            <label>Price Filter:</label>
+            <select id="priceFilter">
+              <option value="lowToHigh">Low to High</option>
+              <option value="highToLow">High to Low</option>
+            </select>
+          </div>
+          <ul>
+    `;
+
+    properties.forEach(property => {
+      html += `
+        <li>
+          <strong>${property.address}</strong>
+          <br>
+          ${property.description}
+          <br>
+          Price: $${property.price}
+        </li>
+      `;
+    });
+
+    html += `
+          </ul>
+          <script>
+            const priceFilter = document.querySelector('#priceFilter');
+            const propertiesList = document.querySelector('ul');
+            
+            priceFilter.addEventListener('change', () => {
+              const selectedOption = priceFilter.value;
+              const sortedProperties = properties.slice().sort((a, b) => {
+                if (selectedOption === 'lowToHigh') {
+                  return a.price - b.price;
+                } else {
+                  return b.price - a.price;
+                }
+              });
+
+              while (propertiesList.firstChild) {
+                propertiesList.removeChild(propertiesList.firstChild);
+              }
+
+              sortedProperties.forEach(property => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                  <strong>${property.address}</strong>
+                  <br>
+                  ${property.description}
+                  <br>
+                  Price: $${property.price}
+                `;
+                propertiesList.appendChild(li);
+              });
+            });
+          </script>
+        </body>
+      </html>
+    `;
+
+    console.log(html); // or write to a file using fs.writeFile()
+  }
+});
