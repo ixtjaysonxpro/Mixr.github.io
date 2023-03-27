@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Get User OS</title>
+	<title>Get User IP</title>
 </head>
 <body>
-	<h1>Get User OS</h1>
-	<form onsubmit="getOS(event)">
+	<h1>Get User IP</h1>
+	<form onsubmit="getUserIP(event)">
 		<label for="ip">Enter IP address:</label>
 		<input type="text" id="ip" name="ip">
 		<input type="submit" value="Submit">
 	</form>
 
-	<p id="os-message"></p>
+	<p id="message"></p>
 
 	<script>
-		function getOS(event) {
+		function getUserIP(event) {
 			event.preventDefault();
 
 			// Retrieve the user's IP address from the user input
@@ -25,17 +25,14 @@
 
 			// Send the API request and retrieve the response
 			fetch(url)
-				.then(response => response.json())
+				.then(response => response.text())
 				.then(data => {
-					// Extract the user's OS from the response data
-					const os = data.data.geo.os;
-
-					// Display the user's OS
-					document.getElementById('os-message').textContent = `The user's OS is ${os}.`;
+					// Display the response data on the page
+					document.getElementById('message').textContent = data;
 				})
 				.catch(error => {
-					console.error(error);
-					document.getElementById('os-message').textContent = 'Error occurred while retrieving user OS.';
+					// Display an error message if there was a problem with the API request
+					document.getElementById('message').textContent = 'An error occurred while fetching data.';
 				});
 		}
 	</script>
