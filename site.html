@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Get User IP and Location</title>
+	<title>Get User Info</title>
 </head>
 <body>
-	<h1>Get User IP and Location</h1>
-	<form onsubmit="getUserInfo(event)">
+	<h1>Get User Info</h1>
+	<form onsubmit="getInfo(event)">
 		<label for="ip">Enter IP address:</label>
 		<input type="text" id="ip" name="ip">
 		<input type="submit" value="Submit">
@@ -14,25 +14,40 @@
 	<div id="results"></div>
 
 	<script>
-		function getUserInfo(event) {
+		function getInfo(event) {
 			event.preventDefault();
 
 			// Retrieve the user's IP address from the user input
 			const ip = document.getElementById('ip').value;
 
 			// Set up the URL for the API request
-			const url = `https://tools.keycdn.com/geo?host=${ip}`;
+			const url = `https://ipapi.co/${ip}/json/`;
 
 			// Send the API request and retrieve the response
 			fetch(url)
-				.then(response => response.text())
+				.then(response => response.json())
 				.then(data => {
-					// Display the response data
-					document.getElementById('results').innerHTML = data;
+					// Extract the relevant information from the response data
+					const country = data.country_name;
+					const city = data.city;
+					const region = data.region;
+					const timezone = data.timezone;
+
+					// Display the results on the page
+					const results = document.getElementById('results');
+					results.innerHTML = `
+						<p>Country: ${country}</p>
+						<p>City: ${city}</p>
+						<p>Region: ${region}</p>
+						<p>Timezone: ${timezone}</p>
+					`;
 				})
 				.catch(error => {
-					// Display an error message if the request fails
-					document.getElementById('results').innerHTML = 'An error occurred while fetching data.';
+					// If an error occurs, display an error message
+					const results = document.getElementById('results');
+					results.innerHTML = `
+						<p>An error occurred while fetching data.</p>
+					`;
 				});
 		}
 	</script>
