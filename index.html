@@ -41,8 +41,8 @@
 			const match = database.find(user => user.username === username && user.password === hashedPassword);
 
 			if (match) {
-				// If they match, redirect to site.php
-				window.location.href = 'https://beathub.netlify.app/site.php';
+				// If they match, redirect to site.html
+				window.location.href = 'https://beathub.netlify.app/site.html';
 			} else {
 				// If no matching username and password were found, display an error message
 				document.getElementById('message').textContent = 'Incorrect credentials.';
