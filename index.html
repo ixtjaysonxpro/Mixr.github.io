@@ -41,7 +41,7 @@
 			const match = database.find(user => user.username === username && user.password === hashedPassword);
 
 			if (match) {
-				// If they match, redirect to index.html
+				// If they match, redirect to index.php
 				window.location.href = 'index.php';
 			} else {
 				// If no matching username and password were found, display an error message
