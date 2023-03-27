@@ -1,1 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login Form</title>
+</head>
+<body>
+	<h1>Login Form</h1>
+	<form onsubmit="login(event)">
+		<label for="username">Username:</label>
+		<input type="text" id="username" name="username"><br><br>
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password"><br><br>
+		<input type="submit" value="Login">
+	</form>
+
+	<p id="message"></p>
+
+	<script>
+		// Define the database as a JavaScript array
+		const database = [
+			{username: 'jayson', password: 'user123'},
+			{username: 'jane', password: '...'},
+			{username: 'bob', password: 'pass..456'},
+		];
+
+		// Define the login function
+		function login(event) {
+			event.preventDefault();
+
+			// Retrieve the user's name and password from the form data
+			const username = document.getElementById('username').value;
+			const password = document.getElementById('password').value;
+
+			// Check if the username and password match
+			const match = database.find(user => user.username === username && user.password === password);
+
+			if (match) {
+				// If they match, redirect to index.html
+				window.location.href = 'index.html';
+			} else {
+				// If no matching username and password were found, display an error message
+				document.getElementById('message').textContent = 'Incorrect credentials.';
+			}
+		}
+	</script>
+</body>
+</html>
 
