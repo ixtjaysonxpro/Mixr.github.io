@@ -18,21 +18,27 @@
 	<script>
 		// Define the database as a JavaScript array
 		const database = [
-			{username: 'jayson', password: 'user123'},
+			{username: 'jayson', password: '4f8dd6ad1e0eef615fe1e84c37f6016d0be6f800c99e7da16c8e9f367b6ce1d6'},
 			{username: 'jane', password: '...'},
-			{username: 'bob', password: 'pass..456'},
+			{username: 'bob', password: '2a283c5e3ca2f4508d35521f7a102c22cc0f7c49a95a69b7c60b521f7eaf8dc8'},
 		];
 
 		// Define the login function
-		function login(event) {
+		async function login(event) {
 			event.preventDefault();
 
 			// Retrieve the user's name and password from the form data
 			const username = document.getElementById('username').value;
 			const password = document.getElementById('password').value;
 
-			// Check if the username and password match
-			const match = database.find(user => user.username === username && user.password === password);
+			// Hash the password using SHA-256
+			const encoder = new TextEncoder();
+			const data = encoder.encode(password);
+			const hash = await crypto.subtle.digest('SHA-256', data);
+			const hashedPassword = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+			// Check if the username and hashed password match
+			const match = database.find(user => user.username === username && user.password === hashedPassword);
 
 			if (match) {
 				// If they match, redirect to index.html
@@ -45,4 +51,3 @@
 	</script>
 </body>
 </html>
-
