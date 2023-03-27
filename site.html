@@ -2,43 +2,6 @@
 <html>
 <head>
 	<title>Get User Info</title>
-</head>
-<body>
-	<h1>Get User Info</h1>
-	<form onsubmit="getInfo(event)">
-		<label for="ip">Enter IP address:</label>
-		<input type="text" id="ip" name="ip">
-		<input type="submit" value="Submit">
-	</form>
-
-	<div id="results"></div>
-
-	<script>
-		function getInfo(event) {
-			event.preventDefault();
-
-			// Retrieve the user's IP address from the user input
-			const ip = document.getElementById('ip').value;
-
-			// Set up the URL for the API request
-			const url = `https://ipapi.co/${ip}/json/`;
-
-			// Send the API request and retrieve the response
-			fetch(url)
-				.then(response => response.json())
-				.then(data => {
-					// Extract the relevant information from the response data
-					const country = data.country_name;
-					const city = data.city;
-					const region = data.region;
-					const timezone = data.timezone;
-
-					// Display the results on the page
-					const results = document.getElementById('results');
-					<!DOCTYPE html>
-<html>
-<head>
-	<title>Get User Info</title>
 	<style>
 		body {
 			background-color: #F5F5F5;
@@ -122,14 +85,3 @@
 		</script>
         </body
         </html>
-				.catch(error => {
-					// If an error occurs, display an error message
-					const results = document.getElementById('results');
-					results.innerHTML = `
-						<p>An error occurred while fetching data.</p>
-					`;
-				});
-		}
-	</script>
-</body>
-</html>
