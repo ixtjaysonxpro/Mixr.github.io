@@ -1,1 +1,43 @@
-<iframe src="https://beathub.netlify.app/site.php" style="width: 100%; height: 500px;"></iframe>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Get User OS</title>
+</head>
+<body>
+	<h1>Get User OS</h1>
+	<form onsubmit="getOS(event)">
+		<label for="ip">Enter IP address:</label>
+		<input type="text" id="ip" name="ip">
+		<input type="submit" value="Submit">
+	</form>
+
+	<p id="os"></p>
+
+	<script>
+		function getOS(event) {
+			event.preventDefault();
+			
+			// Retrieve the user's IP address from the user input
+			const ip = document.getElementById('ip').value;
+			
+			// Set up the URL for the API request
+			const url = `https://tools.keycdn.com/geo.json?host=${ip}`;
+			
+			// Send the API request and retrieve the response
+			fetch(url)
+				.then(response => response.json())
+				.then(data => {
+					// Extract the user's OS from the response data
+					const os = data.data.geo.os;
+					
+					// Display the user's OS
+					document.getElementById('os').textContent = `The user's OS is ${os}.`;
+				})
+				.catch(error => {
+					// Handle any errors
+					console.error(error);
+				});
+		}
+	</script>
+</body>
+</html>
