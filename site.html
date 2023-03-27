@@ -35,13 +35,93 @@
 
 					// Display the results on the page
 					const results = document.getElementById('results');
-					results.innerHTML = `
-						<p>Country: ${country}</p>
-						<p>City: ${city}</p>
-						<p>Region: ${region}</p>
-						<p>Timezone: ${timezone}</p>
+					<!DOCTYPE html>
+<html>
+<head>
+	<title>Get User Info</title>
+	<style>
+		body {
+			background-color: #F5F5F5;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		.container {
+			background-color: #FFFFFF;
+			border-radius: 10px;
+			box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+			margin: 50px auto;
+			padding: 20px;
+			width: 400px;
+		}
+		h1 {
+			color: #444444;
+			font-size: 24px;
+			margin: 0 0 20px;
+			text-align: center;
+		}
+		p {
+			color: #666666;
+			font-size: 16px;
+			line-height: 1.5;
+			margin: 0 0 10px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Get User Info</h1>
+		<form>
+			<label for="ip">Enter IP address:</label>
+			<input type="text" id="ip" name="ip" required>
+			<button type="submit">Submit</button>
+		</form>
+		<div id="result"></div>
+	</div>
+	<script>
+		const form = document.querySelector('form');
+		const input = document.querySelector('input');
+		const resultDiv = document.querySelector('#result');
+
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const ip = input.value.trim();
+			fetch(`https://ipapi.co/${ip}/json/`)
+				.then(response => response.json())
+				.then(data => {
+					resultDiv.innerHTML = `
+						<h2>Locator result:</h2>
+						<p><strong>IP:</strong> ${data.ip}</p>
+						<p><strong>City:</strong> ${data.city}</p>
+						<p><strong>Region:</strong> ${data.region}</p>
+						<p><strong>Region Code:</strong> ${data.region_code}</p>
+						<p><strong>Country:</strong> ${data.country_name}</p>
+						<p><strong>Country Code:</strong> ${data.country}</p>
+						<p><strong>Continent Code:</strong> ${data.continent_code}</p>
+						<p><strong>Currency:</strong> ${data.currency}</p>
+						<p><strong>Languages:</strong> ${data.languages}</p>
+						<p><strong>Organization:</strong> ${data.org}</p>
+						<p><strong>Latitude:</strong> ${data.latitude}</p>
+						<p><strong>Longitude:</strong> ${data.longitude}</p>
+						<p><strong>UTC Offset:</strong> ${data.utc_offset}</p>
+						<p><strong>Postal Code:</strong> ${data.postal}</p>
+						<p><strong>ASN:</strong> ${data.asn}</p>
+						<p><strong>Country Area:</strong> ${data.country_area}</p>
+						<p><strong>Country Population:</strong> ${data.country_population}</p>
+						<p><strong>Version:</strong> ${data.version}</p>
+						<p><strong>Network:</strong> ${data.network}</p>
+						<p><strong>In EU:</strong> ${data.in_eu}</p>
 					`;
-				})
+    })
+    .catch((error) => {
+      resultDiv.innerHTML = `<p>An error occurred while fetching data.</p>`;
+    });
+});
+
+		</script>
+        </body
+        </html>
 				.catch(error => {
 					// If an error occurs, display an error message
 					const results = document.getElementById('results');
