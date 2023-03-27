@@ -11,31 +11,31 @@
 		<input type="submit" value="Submit">
 	</form>
 
-	<p id="os"></p>
+	<p id="os-message"></p>
 
 	<script>
 		function getOS(event) {
 			event.preventDefault();
-			
+
 			// Retrieve the user's IP address from the user input
 			const ip = document.getElementById('ip').value;
-			
+
 			// Set up the URL for the API request
-			const url = `https://tools.keycdn.com/geo.json?host=${ip}`;
-			
+			const url = `https://tools.keycdn.com/geo?host=${ip}`;
+
 			// Send the API request and retrieve the response
 			fetch(url)
 				.then(response => response.json())
 				.then(data => {
 					// Extract the user's OS from the response data
 					const os = data.data.geo.os;
-					
+
 					// Display the user's OS
-					document.getElementById('os').textContent = `The user's OS is ${os}.`;
+					document.getElementById('os-message').textContent = `The user's OS is ${os}.`;
 				})
 				.catch(error => {
-					// Handle any errors
 					console.error(error);
+					document.getElementById('os-message').textContent = 'Error occurred while retrieving user OS.';
 				});
 		}
 	</script>
