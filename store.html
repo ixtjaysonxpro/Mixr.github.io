@@ -1,0 +1,25 @@
+<script>
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(saveLocation);
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
+  function saveLocation(position) {
+    const lat = position.coords.latitude;
+    const long = position.coords.longitude;
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "save_location.php");
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log(xhr.responseText);
+      }
+    };
+    xhr.send(`lat=${lat}&long=${long}`);
+  }
+
+  getLocation();
+</script>
