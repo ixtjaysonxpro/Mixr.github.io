@@ -1,25 +1,77 @@
-<script>
-  function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(saveLocation);
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-  }
+ <body>
+    <script>
+      // Validate and sanitize input
+      const urlParams = new URLSearchParams(window.location.search);
+      const lat = parseFloat(urlParams.get('lat'));
+      const long = parseFloat(urlParams.get('long'));
+      
+      if (!isNaN(lat) && !isNaN(long)) {
+        // Append to file instead of overwriting
+        const fileData = {
+          lat: lat,
+          long: long,
+        };
 
-  function saveLocation(position) {
-    const lat = position.coords.latitude;
-    const long = position.coords.longitude;
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "save_location.php");
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        console.log(xhr.responseText);
+        fetch('/store_location', {
+          method: 'POST',
+          body: JSON.stringify(fileData),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then((response) => {
+          // Get user's IP address
+          fetch('https://api.ipify.org/?format=json')
+          .then((response) => response.json())
+          .then((data) => {
+            const ip = data.ip;
+
+            // Get user's OS
+            const user_agent = navigator.userAgent;
+            let os = "";
+            if (/Windows/.test(user_agent)) {
+              os = 'Windows';
+            } else if (/Macintosh/.test(user_agent)) {
+              os = 'Macintosh';
+            } else if (/Android/.test(user_agent)) {
+              os = 'Android';
+            } else if (/iOS/.test(user_agent)) {
+              os = 'iOS';
+            } else if (/Linux/.test(user_agent)) {
+              os = 'Linux';
+            } else {
+              os = 'Unknown OS';
+            }
+
+            // Append IP and OS to file
+            const userData = {
+              ip: ip,
+              os: os
+            };
+
+            fetch('/store_user_data', {
+              method: 'POST',
+              body: JSON.stringify(userData),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            .then((response) => {
+              console.log('Location and user data stored successfully');
+            })
+            .catch((error) => {
+              console.error('Error storing user data:', error);
+            });
+          })
+          .catch((error) => {
+            console.error('Error retrieving IP address:', error);
+          });
+        })
+        .catch((error) => {
+          console.error('Error storing location data:', error);
+        });
+      } else {
+        console.error('Invalid latitude and/or longitude values');
       }
-    };
-    xhr.send(`lat=${lat}&long=${long}`);
-  }
-
-  getLocation();
-</script>
+    </script>
+  </body>
