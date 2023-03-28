@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<!--ssssssssssssssssssssssssttttttttttttttttttttttttttttttaaaaaaaaaaaaaaaaaaaaaaaaaaarrrrrrrrrrrttttttttttt-->
- <body onload="getLocation()">
+  <body onload="getLocation()">
     <p id="demo"></p>
 
     <script>
@@ -22,7 +22,7 @@
             console.log(this.responseText);
           }
         };
-        xhttp.open("GET", "store.html?lat=" + position.coords.latitude + "&long=" + position.coords.longitude, true);
+        xhttp.open("GET", "store.php?lat=" + position.coords.latitude + "&long=" + position.coords.longitude, true);
         xhttp.send();
       }
     </script>
